@@ -8,6 +8,4 @@
 
 Implementation of various machine learning models with Scikit Learn
 
-
-
-\literate{/_literate/logisticregression.jl}     
+[Logistic Regression](/page/logisticregression)
