@@ -86,13 +86,9 @@ In some cases, you might have to restart your VS Code to have the changes update
 
   ![Julia REPL](/img/julia-running.png.png)
 
-## Python Setup 
-
-- You can install python either via [Anaconda Distribution](www.anaconda.con/downloads) or their [official website](https://www.python.org/downloads/). While any 3.** versions should work fine with the existing code base, the codes and notebooks in this course were developed with a Python 3.6 setup.
 
 
-
-## Installing Julia Packages 
+## Installing Julia Packages  
 
 Very often you will have to install third-party packages as part of your programming workflow. Adding new packages is pretty straight forward in Julia. 
 
@@ -100,3 +96,12 @@ Very often you will have to install third-party packages as part of your program
 - Once you are inside Julia's package mode, to install a package, simply type `add YourPackageName` and hit enter. After installation is complete, your REPL will return to  `(@v1.5) pkg>`.
 - To exit package mode, simply hit backspace. 
 
+## Installing Python 
+
+Using the trick we learned in the above section to install packages, we will install `Conda`, which will by default install the most upto data Python version compatible with Julia:
+
+```julia
+add Conda
+```
+
+ 
