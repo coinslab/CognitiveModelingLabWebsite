@@ -10,12 +10,12 @@
 
 Though we will be mostly using toy datasets from `RDatasets`, you are encouraged to explore and fiddle with publicly available open datasets for your own learning and for your class project. Some of the data repositories you should checkout are:
 
-- [Kaggle]([Find Open Datasets and Machine Learning Projects | Kaggle](https://www.kaggle.com/datasets)): For all sorts of datasets.
--  [UCI Machine Learning Repository]([UCI Machine Learning Repository: Data Sets](https://archive.ics.uci.edu/ml/datasets.php?task=cla&area=&type=&view=table)): For all sorts of datasets.
-- [UCLA Library]([Psychological Datasets - Psychology - Research Guides at UCLA Library](https://guides.library.ucla.edu/c.php?g=180221&p=1188487)) : For Psychological datasets.  
-- [CMU DataShop]([DataShop > Home (cmu.edu)](https://pslcdatashop.web.cmu.edu/)): For Educational & Psychological datasets. 
-- [CRCN]([Data Sets — CRCNS.org](https://crcns.org/data-sets)): For Neuroscience datasets.
-- [OpenNeuro]([Public Dataset Results - OpenNeuro](https://openneuro.org/public/datasets)): For Neuroscience datasets 
+- [Kaggle](https://www.kaggle.com/datasets): For all sorts of datasets.
+-  [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets.php?task=cla&area=&type=&view=table): For all sorts of datasets.
+- [UCLA Library](https://guides.library.ucla.edu/c.php?g=180221&p=1188487) : For Psychological datasets.  
+- [CMU DataShop](https://pslcdatashop.web.cmu.edu/): For Educational & Psychological datasets. 
+- [CRCN](https://crcns.org/data-sets): For Neuroscience datasets.
+- [OpenNeuro](https://openneuro.org/public/datasets): For Neuroscience datasets 
 
 
 
