@@ -16,7 +16,8 @@ jobs:
     - name: Install python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.6'
+        python-version: '3.8'
+        -run: pip install -U scikit-learn
     # NOTE: Here you can install dependencies such as matplotlib if you use
     # packages such as PyPlot.
     # - run: pip install matplotlib
