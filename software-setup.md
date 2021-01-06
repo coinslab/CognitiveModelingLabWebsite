@@ -98,10 +98,10 @@ Very often you will have to install third-party packages as part of your program
 
 ## Installing Python 
 
-Using the trick we learned in the above section to install packages, we will install `Conda`, which will by default install the most upto data Python version compatible with Julia:
+Using the trick we learned in the above section to install packages, we will install `PyCall`, which will by default install the most upto data Python version compatible with Julia:
 
 ```julia
-add Conda
+add PyCall
 ```
 
  
