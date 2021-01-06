@@ -1,84 +1,102 @@
 +++
-title = "Code blocks"
+title = "Software Setup"
 hascode = true
 date = Date(2019, 3, 22)
-rss = "A short description of the page which would serve as **blurb** in a `RSS` feed; you can use basic markdown here but the whole description string must be a single line (not a multiline string). Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don't expect maths or fancy styling to work; images should be ok though: ![](https://upload.wikimedia.org/wikipedia/en/3/32/Rick_and_Morty_opening_credits.jpeg)"
+
 +++
-@def tags = ["syntax", "code"]
+@def tags = ["software-setup", "code"]
 
-# Working with code blocks
+# Software Setup
 
-\toc
 
-## Live evaluation of code blocks
 
-If you would like to show code as well as what the code outputs, you only need to specify where the script corresponding to the code block will be saved.
+In this course we will be using [Julia programming Language]([The Julia Programming Language (julialang.org)](https://julialang.org/)) and the industry standard [Scikit Learn]([scikit-learn: machine learning in Python — scikit-learn 0.24.0 documentation (scikit-learn.org)](https://scikit-learn.org/stable/index.html)) package in the lab sessions to implement several machine learning algorithms. *Though all the code you will be developing as part of this course will be in Julia, we would require Python installed in your machine. This is because the original Scikit Learn package was written in Python, and for some functionality, Julia needs to communicate with a Python interpreter.* 
 
-Indeed, what happens is that the code block gets saved as a script which then gets executed.
-This also allows for that block to not be re-executed every time you change something _else_ on the page.
+\tableofcontents
 
-Here's a simple example (change values in `a` to see the results being live updated):
+## Julia Setup 
 
-```julia:./exdot.jl
-using LinearAlgebra
-a = [1, 2, 3, 3, 4, 5, 2, 2]
-@show dot(a, a)
-println(dot(a, a))
+### Step 1: Install Julia 1.5
+
+*For this course we recommend you install Julia 1.5 or above.*
+
+Go to [https://julialang.org/downloads]( https://julialang.org/downloads) and download  Julia 1.5.1, using the correct version for your operating system (Linux x86, Mac, Windows, etc).
+
+#### Mac Setup 
+
+For Mac users, you can download the .dmg file and install Julia just like any other software you usually install on a Mac. Once installation is complete, you can run Julia from your Launchpad or from your Applications folder.  Once you fire up your Julia, you will see a code similar to the one before 
+
+```shell
+*your-mac-name*:~ *username*$ exec '*path-to-julia-installation-directory*'
 ```
 
-You can now show what this would look like:
+right before this 
 
-\output{./exdot.jl}
+   ![](/img/julia-running.png.png)        
 
-**Notes**:
-* you don't have to specify the `.jl` (see below),
-* you do need to explicitly use print statements or `@show` for things to show, so just leaving a variable at the end like you would in the REPL will show nothing,
-* only Julia code blocks are supported at the moment, there may be a support for scripting languages like `R` or `python` in the future,
-* the way you specify the path is important; see [the docs](https://tlienart.github.io/franklindocs/code/index.html#more_on_paths) for more info. If you don't care about how things are structured in your `/assets/` folder, just use `./scriptname.jl`. If you want things to be grouped, use `./group/scriptname.jl`. For more involved uses, see the docs.
+ @@colbox-blue You need to copy the path to a notepad or somewhere handy.@@
 
-Lastly, it's important to realise that if you don't change the content of the code, then that code will only be executed _once_ even if you make multiple changes to the text around it.
+#### Windows Setup 
 
-Here's another example,
+Upon running the installer you downloaded from Julia's website you will be getting the following window
 
-```julia:./code/ex2
-for i ∈ 1:5, j ∈ 1:5
-    print(" ", rpad("*"^i,5), lpad("*"^(6-i),5), j==5 ? "\n" : " "^4)
-end
-```
+![](/img/windows installer.png)
 
-which gives the (utterly useless):
+Instead of #### in the image, you will be seeing your computer's name. 
 
-\output{./code/ex2}
+@@colbox-blue You need to copy the installation directory temporarily to a notepad or somewhere handy.@@
 
-note the absence of `.jl`, it's inferred.
+Once ready, proceed to *Next*. With all the default settings, the installer will also be creating a desktop shortcut.
 
-You can also hide lines (that will be executed nonetheless):
+### Step 2: Install VS Code
 
-```julia:./code/ex3
-using Random
-Random.seed!(1) # hide
-@show randn(2)
-```
-
-\output{./code/ex3}
+Download and install VS Code, based on the platform you are using, from the [VS Code](https://code.visualstudio.com/) homepage. 
 
 
-## Including scripts
 
-Another approach is to include the content of a script that has already been executed.
-This can be an alternative to the description above if you'd like to only run the code once because it's particularly slow or because it's not Julia code.
-For this you can use the `\input` command specifying which language it should be tagged as:
+### Step 3: Install Julia Extension 
+
+1. Once the VS Code installation is complete, start VS Code from your desktop.
+2. Press `Ctrl + Shift +X` (if windows) or `Cmd + Shift +X` (if Mac) to view the Extensions panel towards the left of your VS Code Window. 
+3. Enter `Julia` in the marketplace search box and click `Install`. (Instead of the gear icon in the image, you will be seeing an install button.)
+   ![](/img/julia-vscode-extension.png)
+
+@@colbox-blue **NOTE:** It is recommended that you restart VS Code after installation.@@
+
+### Step 4: Configuring the Julia extension 
+
+If you installed Julia into a standard location on Mac or Windows, or if the Julia binary is on your `PATH`, the Julia VS Code extension automatically finds your Julia installation. You do not need to configure the extension. However it doesn't hurt to check if the path is correct as the one you copied to the notepad in step 1. 
+@@colbox-blue It is **very important** to make sure you have the right path, or your Julia wouldn't work inside VS Code.@@
+
+If the VS Code extension does not find your Julia installation automatically, or to verify the path, use the following steps:
+
+- Follow sub-steps 2 & 3 from *Step 3* to view the extension panel and julia extension. By clicking on the gear icon you see against `julialang`, you will get a drop-down menu. From that drop-down menu, choose, `Extension Settings` and you get a window pane like this: 
+
+![](/img/config.png)
 
 
-\input{julia}{/_assets/scripts/script1.jl} <!--_-->
+
+- In the textbox, right below `Executable Path` enter the *path-to-installation-directory* you copied from Step 1.
+
+In some cases, you might have to restart your VS Code to have the changes updated.
+
+### (Optional) Step 4: REPL Inside VS Code 
+
+- To get the REPL(Read-Evaluation-Print-Loop) started inside VS Code, press `Ctrl + Shift + P` (for windows) and `Cmd + Shift +P` (for Mac)
+
+  ![Julia REPL](/img/julia-running.png.png)
+
+## Python Setup 
+
+- You can install python either via [Anaconda Distribution](www.anaconda.con/downloads) or their [official website](https://www.python.org/downloads/). While any 3.** versions should work fine with the existing code base, the codes and notebooks in this course were developed with a Python 3.6 setup.
 
 
-these scripts can be run in such a way that their output is also saved to file, see `scripts/generate_results.jl` for instance, and you can then also input the results:
 
-\output{/_assets/scripts/script1.jl} <!--_-->
+## Installing Julia Packages 
 
-which is convenient if you're presenting code.
+Very often you will have to install third-party packages as part of your programming workflow. Adding new packages is pretty straight forward in Julia. 
 
-**Note**: paths specification matters, see [the docs](https://tlienart.github.io/franklindocs/code/index.html#more_on_paths) for details.
+- Once you are in the REPL, type `]`. This will take you to Julia's Package Mode and your `julia>` will turn into `(@v1.5) pkg>`. 
+- Once you are inside Julia's package mode, to install a package, simply type `add YourPackageName` and hit enter. After installation is complete, your REPL will return to  `(@v1.5) pkg>`.
+- To exit package mode, simply hit backspace. 
 
-Using this approach with the `generate_results.jl` file also makes sure that all the code on your website works and that all results match the code which makes maintenance easier.
