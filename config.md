@@ -6,11 +6,11 @@ The website_* must be defined for the RSS to work
 
 @def prepath = "CognitiveModelingLabWebsite"
 
-@def website_title = "Franklin Template"
-@def website_descr = "Example website using Franklin"
+@def website_title = "CGS 3342"
+@def website_descr = "Cognitive & Neural Modeling Lab"
 @def website_url   = "https://tlienart.github.io/FranklinTemplates.jl/"
 
-@def author = "Septimia Zenobia"
+@def author = "Cognitive Informatics and Statistics Lab"
 
 @def mintoclevel = 2
 
