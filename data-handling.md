@@ -9,3 +9,21 @@
 # Data Handling
 
 Routines and utilities to download dataset from the web, load data, split & do data wrangling. 
+
+
+
+- [Getting the Data](/page/getting-data) 
+  - From URLs
+  - From Packages 
+  - From your Desktop 
+- Understanding your Data 
+  - Summary Statistics 
+  - Data Visualization
+- Data Reshaping 
+- Data Pre-processing 
+  - Data Splitting 
+  - Data Sampling 
+  - Data Encoding 
+  - Handling Missing Data 
+  - Handling Imbalanced Dataset 
+  - Feature Engineering
