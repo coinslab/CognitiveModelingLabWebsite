@@ -1,0 +1,3 @@
+ArgumentError: Package ScikitLearn not found in current path:
+- Run `import Pkg; Pkg.add("ScikitLearn")` to install the ScikitLearn package.
+
