@@ -14,19 +14,19 @@
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://tlienart.github.io/FranklinTemplates.jl/menu3/index.html</loc>
+    <loc>https://tlienart.github.io/FranklinTemplates.jl/data-handling/index.html</loc>
     <lastmod>2021-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://tlienart.github.io/FranklinTemplates.jl/menu1/index.html</loc>
+    <loc>https://tlienart.github.io/FranklinTemplates.jl/model-zoo/index.html</loc>
     <lastmod>2021-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
 </url>
 <url>
-    <loc>https://tlienart.github.io/FranklinTemplates.jl/menu2/index.html</loc>
+    <loc>https://tlienart.github.io/FranklinTemplates.jl/software-setup/index.html</loc>
     <lastmod>2021-01-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
