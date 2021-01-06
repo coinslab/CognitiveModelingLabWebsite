@@ -1,28 +1,57 @@
 <!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Model Zoo</title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h1><a href="/CognitiveModelingLabWebsite/">CGS3342</a></h1> <p class=lead >Cognitive & Neural Modeling Lab.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item active" href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=model_zoo ><a href="#model_zoo">Model Zoo</a></h1> <p>Implementation of various machine learning models with Scikit Learn</p> <p><h1 id=example_for_multiclass_regression ><a href="#example_for_multiclass_regression">Example for Multiclass Regression</a></h1> <pre><code class="julia hljs"><span class=hljs-comment ># Loading Packages &amp; Models from packages</span>
 <span class=hljs-keyword >using</span> ScikitLearn
 <span class=hljs-keyword >using</span> RDatasets
-<span class=hljs-keyword >using</span> Plots
 <span class=hljs-keyword >using</span> ScikitLearn.CrossValidation: cross_val_score
 <span class=hljs-meta >@sk_import</span> model_selection: train_test_split
 <span class=hljs-meta >@sk_import</span> linear_model: LogisticRegression
 <span class=hljs-meta >@sk_import</span> metrics: confusion_matrix
 <span class=hljs-meta >@sk_import</span> metrics: classification_report
 <span class=hljs-meta >@sk_import</span> metrics: roc_curve
-<span class=hljs-comment >############################################</span></code></pre><pre><code class="plaintext hljs">ArgumentError: Package ScikitLearn not found in current path:
-- Run `import Pkg; Pkg.add(&quot;ScikitLearn&quot;)` to install the ScikitLearn package.
-
-</code></pre> <h2 id=loading_dataset ><a href="#loading_dataset">Loading Dataset</a></h2> <pre><code class="julia hljs">iris = dataset(<span class=hljs-string >&quot;datasets&quot;</span>, <span class=hljs-string >&quot;iris&quot;</span>);</code></pre><pre><code class="plaintext hljs">UndefVarError: dataset not defined
-</code></pre> <h2 id=extracting_the_targets_and_predictors ><a href="#extracting_the_targets_and_predictors">Extracting the targets and predictors</a></h2> <pre><code class="julia hljs">X = convert(<span class=hljs-built_in >Array</span>, iris[!, [:SepalLength, :SepalWidth, :PetalLength, :PetalWidth]]);
-X[<span class=hljs-number >1</span>:<span class=hljs-number >5</span>,:]</code></pre><pre><code class="plaintext hljs">UndefVarError: iris not defined
-</code></pre> <pre><code class="julia hljs">y = y = convert(<span class=hljs-built_in >Array</span>, iris[!, :Species]);
-y[<span class=hljs-number >1</span>:<span class=hljs-number >5</span>,:]</code></pre><pre><code class="plaintext hljs">UndefVarError: iris not defined
-</code></pre> <h2 id=spliting_the_dataset ><a href="#spliting_the_dataset">Spliting the dataset</a></h2> <pre><code class="julia hljs">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class=hljs-number >42</span>);</code></pre><pre><code class="plaintext hljs">UndefVarError: train_test_split not defined
-</code></pre> <h2 id=initializing_the_model_with_200_iterations ><a href="#initializing_the_model_with_200_iterations">Initializing the model with 200 iterations</a></h2> <pre><code class="julia hljs">logisticmodel = LogisticRegression(fit_intercept=<span class=hljs-literal >true</span>, max_iter = <span class=hljs-number >200</span>);</code></pre><pre><code class="plaintext hljs">UndefVarError: LogisticRegression not defined
-</code></pre> <h2 id=model_fiting ><a href="#model_fiting">Model Fiting</a></h2> <pre><code class="julia hljs">fit!(logisticmodel, X_train, y_train)</code></pre><pre><code class="plaintext hljs">UndefVarError: fit! not defined
-</code></pre> <h2 id=checking_the_accuracy ><a href="#checking_the_accuracy">Checking the accuracy</a></h2> <pre><code class="julia hljs">accuracy = score(logisticmodel, X_train, y_train)</code></pre><pre><code class="plaintext hljs">UndefVarError: score not defined
-</code></pre> <p>With Cross Validation</p> <pre><code class="julia hljs">cross_val_score(LogisticRegression(max_iter=<span class=hljs-number >130</span>), X_train, y_train; cv=<span class=hljs-number >5</span>)
+<span class=hljs-comment >############################################</span></code></pre><pre><code class="plaintext hljs">PyCall.PyError(&quot;PyImport_ImportModule\n\nThe Python package sklearn could not be imported by pyimport. Usually this means\nthat you did not install sklearn in the Python version being used by PyCall.\n\nPyCall is currently configured to use the Python version at:\n\n/opt/hostedtoolcache/Python/3.8.6/x64/bin/python3\n\nand you should use whatever mechanism you usually use (apt-get, pip, conda,\netcetera) to install the Python package containing the sklearn module.\n\nOne alternative is to re-configure PyCall to use a different Python\nversion on your system: set ENV[\&quot;PYTHON\&quot;] to the path/name of the python\nexecutable you want to use, run Pkg.build(\&quot;PyCall\&quot;), and re-launch Julia.\n\nAnother alternative is to configure PyCall to use a Julia-specific Python\ndistribution via the Conda.jl package (which installs a private Anaconda\nPython distribution), which has the advantage that packages can be installed\nand kept up-to-date via Julia.  As explained in the PyCall documentation,\nset ENV[\&quot;PYTHON\&quot;]=\&quot;\&quot;, run Pkg.build(\&quot;PyCall\&quot;), and re-launch Julia. Then,\nTo install the sklearn module, you can use `pyimport_conda(\&quot;sklearn\&quot;, PKG)`,\nwhere PKG is the Anaconda package the contains the module sklearn,\nor alternatively you can use the Conda package directly (via\n`using Conda` followed by `Conda.add` etcetera).\n\n&quot;, PyCall.PyObject(Ptr{PyCall.PyObject_struct} @0x00007fd189ac82a0), PyCall.PyObject(Ptr{PyCall.PyObject_struct} @0x00007fd18909e6d0), PyCall.PyObject(Ptr{PyCall.PyObject_struct} @0x0000000000000000))
+</code></pre> <h2 id=loading_dataset ><a href="#loading_dataset">Loading Dataset</a></h2> <pre><code class="julia hljs">iris = dataset(<span class=hljs-string >&quot;datasets&quot;</span>, <span class=hljs-string >&quot;iris&quot;</span>);</code></pre>
+<h2 id=extracting_the_targets_and_predictors ><a href="#extracting_the_targets_and_predictors">Extracting the targets and predictors</a></h2>
+<pre><code class="julia hljs">X = convert(<span class=hljs-built_in >Array</span>, iris[!, [:SepalLength, :SepalWidth, :PetalLength, :PetalWidth]]);
+X[<span class=hljs-number >1</span>:<span class=hljs-number >5</span>,:]</code></pre><pre><code class="plaintext hljs">5×4 Array{Float64,2}:
+ 5.1  3.5  1.4  0.2
+ 4.9  3.0  1.4  0.2
+ 4.7  3.2  1.3  0.2
+ 4.6  3.1  1.5  0.2
+ 5.0  3.6  1.4  0.2</code></pre>
+<pre><code class="julia hljs">y = y = convert(<span class=hljs-built_in >Array</span>, iris[!, :Species]);
+y[<span class=hljs-number >1</span>:<span class=hljs-number >5</span>,:]</code></pre><pre><code class="plaintext hljs">5×1 Array{String,2}:
+ &quot;setosa&quot;
+ &quot;setosa&quot;
+ &quot;setosa&quot;
+ &quot;setosa&quot;
+ &quot;setosa&quot;</code></pre>
+<h2 id=spliting_the_dataset ><a href="#spliting_the_dataset">Spliting the dataset</a></h2>
+<pre><code class="julia hljs">X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class=hljs-number >42</span>);</code></pre><pre><code class="plaintext hljs">UndefVarError: train_test_split not defined
+</code></pre>
+<h2 id=initializing_the_model_with_200_iterations ><a href="#initializing_the_model_with_200_iterations">Initializing the model with 200 iterations</a></h2>
+<pre><code class="julia hljs">logisticmodel = LogisticRegression(fit_intercept=<span class=hljs-literal >true</span>, max_iter = <span class=hljs-number >200</span>);</code></pre><pre><code class="plaintext hljs">UndefVarError: LogisticRegression not defined
+</code></pre>
+<h2 id=model_fiting ><a href="#model_fiting">Model Fiting</a></h2>
+<pre><code class="julia hljs">fit!(logisticmodel, X_train, y_train)</code></pre><pre><code class="plaintext hljs">UndefVarError: logisticmodel not defined
+</code></pre>
+<h2 id=checking_the_accuracy ><a href="#checking_the_accuracy">Checking the accuracy</a></h2>
+<pre><code class="julia hljs">accuracy = score(logisticmodel, X_train, y_train)</code></pre><pre><code class="plaintext hljs">UndefVarError: logisticmodel not defined
+</code></pre>
+<p>With Cross Validation</p>
+<pre><code class="julia hljs">cross_val_score(LogisticRegression(max_iter=<span class=hljs-number >130</span>), X_train, y_train; cv=<span class=hljs-number >5</span>)
 
 y_pred = predict(logisticmodel, X_train);</code></pre><pre><code class="plaintext hljs">UndefVarError: LogisticRegression not defined
-</code></pre> <h2 id=confusion_matrix ><a href="#confusion_matrix">Confusion Matrix</a></h2> <pre><code class="julia hljs">cf_matrix =confusion_matrix(y_train, y_pred)</code></pre><pre><code class="plaintext hljs">UndefVarError: confusion_matrix not defined
-</code></pre> <h2 id=precision_recall ><a href="#precision_recall">Precision &amp; Recall</a></h2> <pre><code class="julia hljs">println(classification_report(y_train, y_pred))</code></pre><pre><code class="plaintext hljs">UndefVarError: classification_report not defined
-</code></pre> </p> <div class=page-foot > <div class=copyright > &copy; Cognitive Informatics and Statistics Lab. Last modified: January 06, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. </div> </div> </div> </div>
+</code></pre>
+<h2 id=confusion_matrix ><a href="#confusion_matrix">Confusion Matrix</a></h2>
+<pre><code class="julia hljs">cf_matrix =confusion_matrix(y_train, y_pred)</code></pre><pre><code class="plaintext hljs">UndefVarError: confusion_matrix not defined
+</code></pre>
+<h2 id=precision_recall ><a href="#precision_recall">Precision &amp; Recall</a></h2>
+<pre><code class="julia hljs">println(classification_report(y_train, y_pred))</code></pre><pre><code class="plaintext hljs">UndefVarError: classification_report not defined
+</code></pre>
+     </p>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Cognitive Informatics and Statistics Lab. Last modified: January 06, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
+    </div>

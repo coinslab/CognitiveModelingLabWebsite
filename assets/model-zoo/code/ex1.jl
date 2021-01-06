@@ -2,7 +2,6 @@
 # Loading Packages & Models from packages
 using ScikitLearn
 using RDatasets
-using Plots
 using ScikitLearn.CrossValidation: cross_val_score
 @sk_import model_selection: train_test_split
 @sk_import linear_model: LogisticRegression
