@@ -8,4 +8,5 @@
 
 Implementation of various machine learning models with Scikit Learn
 
-[Logistic Regression](/page/logisticregression)
+[Logistic Regression](/page/LogisticRegression)
+
