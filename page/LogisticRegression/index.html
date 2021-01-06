@@ -1,1 +1,79 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Getting Data</title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h1><a href="/CognitiveModelingLabWebsite/">CGS3342</a></h1> <p class=lead >Cognitive & Neural Modeling Lab.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=getting_the_data ><a href="#getting_the_data">Getting the data </a></h1> <p>Though we will be mostly using toy datasets from <code>RDatasets</code>, you are encouraged to explore and fiddle with publicly available open datasets for your own learning and for your class project. Some of the data repositories you should checkout are:</p> <ul> <li><p><a href="https://www.kaggle.com/datasets">Kaggle</a>: For all sorts of datasets.</p> <li><p><a href="https://archive.ics.uci.edu/ml/datasets.php?task&#61;cla&amp;area&#61;&amp;type&#61;&amp;view&#61;table">UCI Machine Learning Repository</a>: For all sorts of datasets.</p> <li><p><a href="https://guides.library.ucla.edu/c.php?g&#61;180221&amp;p&#61;1188487">UCLA Library</a> : For Psychological datasets. </p> <li><p><a href="https://pslcdatashop.web.cmu.edu/">CMU DataShop</a>: For Educational &amp; Psychological datasets. </p> <li><p><a href="https://crcns.org/data-sets">CRCN</a>: For Neuroscience datasets.</p> <li><p><a href="https://openneuro.org/public/datasets">OpenNeuro</a>: For Neuroscience datasets </p> </ul> <div class=page-foot > <div class=copyright > &copy; Cognitive Informatics and Statistics Lab. Last modified: January 06, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>. </div> </div> </div> </div>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Getting Data</title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h1><a href="/CognitiveModelingLabWebsite/">CGS3342</a></h1> <p class=lead >Cognitive & Neural Modeling Lab.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=multiclass_logistic_regression ><a href="#multiclass_logistic_regression">Multiclass Logistic Regression </a></h1> <h2 id=loading_packages_modules_from_packages ><a href="#loading_packages_modules_from_packages">Loading Packages &amp; Modules from packages </a></h2> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> ScikitLearn
+<span class=hljs-keyword >using</span> RDatasets
+<span class=hljs-keyword >import</span> ScikitLearn: CrossValidation
+<span class=hljs-meta >@sk_import</span> linear_model: LogisticRegression
+<span class=hljs-meta >@sk_import</span> metrics: confusion_matrix
+<span class=hljs-meta >@sk_import</span> metrics: classification_report
+<span class=hljs-meta >@sk_import</span> metrics: roc_curve</code></pre> <h2 id=loading_the_dataset ><a href="#loading_the_dataset">Loading the dataset </a></h2> <pre><code class="julia hljs">iris = dataset(<span class=hljs-string >&quot;datasets&quot;</span>, <span class=hljs-string >&quot;iris&quot;</span>)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >150</span>×<span class=hljs-number >5</span> DataFrame
+ Row │ SepalLength  SepalWidth  PetalLength  PetalWidth  Species   
+     │ <span class=hljs-built_in >Float64</span>      <span class=hljs-built_in >Float64</span>     <span class=hljs-built_in >Float64</span>      <span class=hljs-built_in >Float64</span>     Cat…      
+─────┼─────────────────────────────────────────────────────────────
+   <span class=hljs-number >1</span> │         <span class=hljs-number >5.1</span>         <span class=hljs-number >3.5</span>          <span class=hljs-number >1.4</span>         <span class=hljs-number >0.2</span>  setosa
+   <span class=hljs-number >2</span> │         <span class=hljs-number >4.9</span>         <span class=hljs-number >3.0</span>          <span class=hljs-number >1.4</span>         <span class=hljs-number >0.2</span>  setosa
+   <span class=hljs-number >3</span> │         <span class=hljs-number >4.7</span>         <span class=hljs-number >3.2</span>          <span class=hljs-number >1.3</span>         <span class=hljs-number >0.2</span>  setosa
+   <span class=hljs-number >4</span> │         <span class=hljs-number >4.6</span>         <span class=hljs-number >3.1</span>          <span class=hljs-number >1.5</span>         <span class=hljs-number >0.2</span>  setosa
+   <span class=hljs-number >5</span> │         <span class=hljs-number >5.0</span>         <span class=hljs-number >3.6</span>          <span class=hljs-number >1.4</span>         <span class=hljs-number >0.2</span>  setosa
+  ⋮  │      ⋮           ⋮            ⋮           ⋮           ⋮
+ <span class=hljs-number >146</span> │         <span class=hljs-number >6.7</span>         <span class=hljs-number >3.0</span>          <span class=hljs-number >5.2</span>         <span class=hljs-number >2.3</span>  virginica
+ <span class=hljs-number >147</span> │         <span class=hljs-number >6.3</span>         <span class=hljs-number >2.5</span>          <span class=hljs-number >5.0</span>         <span class=hljs-number >1.9</span>  virginica
+ <span class=hljs-number >148</span> │         <span class=hljs-number >6.5</span>         <span class=hljs-number >3.0</span>          <span class=hljs-number >5.2</span>         <span class=hljs-number >2.0</span>  virginica
+ <span class=hljs-number >149</span> │         <span class=hljs-number >6.2</span>         <span class=hljs-number >3.4</span>          <span class=hljs-number >5.4</span>         <span class=hljs-number >2.3</span>  virginica
+ <span class=hljs-number >150</span> │         <span class=hljs-number >5.9</span>         <span class=hljs-number >3.0</span>          <span class=hljs-number >5.1</span>         <span class=hljs-number >1.8</span>  virginica
+                                                   <span class=hljs-number >140</span> rows omitted</code></pre>
+<pre><code class="julia hljs">X = convert(<span class=hljs-built_in >Array</span>, iris[!, [:SepalLength, :SepalWidth, :PetalLength, :PetalWidth]]);
+X[<span class=hljs-number >1</span>:<span class=hljs-number >5</span>,:]</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >5</span>×<span class=hljs-number >4</span> <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Float64</span>,<span class=hljs-number >2</span>}:
+ <span class=hljs-number >5.1</span>  <span class=hljs-number >3.5</span>  <span class=hljs-number >1.4</span>  <span class=hljs-number >0.2</span>
+ <span class=hljs-number >4.9</span>  <span class=hljs-number >3.0</span>  <span class=hljs-number >1.4</span>  <span class=hljs-number >0.2</span>
+ <span class=hljs-number >4.7</span>  <span class=hljs-number >3.2</span>  <span class=hljs-number >1.3</span>  <span class=hljs-number >0.2</span>
+ <span class=hljs-number >4.6</span>  <span class=hljs-number >3.1</span>  <span class=hljs-number >1.5</span>  <span class=hljs-number >0.2</span>
+ <span class=hljs-number >5.0</span>  <span class=hljs-number >3.6</span>  <span class=hljs-number >1.4</span>  <span class=hljs-number >0.2</span></code></pre>
+<pre><code class="julia hljs">y = y = convert(<span class=hljs-built_in >Array</span>, iris[!, :Species]);
+y[<span class=hljs-number >1</span>:<span class=hljs-number >5</span>,:]</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >5</span>×<span class=hljs-number >1</span> <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >String</span>,<span class=hljs-number >2</span>}:
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span></code></pre>
+<h2 id=splitting_the_dataset ><a href="#splitting_the_dataset">Splitting the dataset </a></h2>
+<pre><code class="julia hljs">logisticmodel = LogisticRegression(fit_intercept=<span class=hljs-literal >true</span>, max_iter = <span class=hljs-number >200</span>);</code></pre>
+<h2 id=model_fitting ><a href="#model_fitting">Model Fitting </a></h2>
+<pre><code class="julia hljs">fit!(logisticmodel, X_train, y_train)</code></pre>
+<h3 id=checking_the_accuracy ><a href="#checking_the_accuracy">Checking the Accuracy </a></h3>
+<pre><code class="julia hljs">accuracy = score(logisticmodel, X_train, y_train)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >0.9642857142857143</span></code></pre>
+<h3 id=with_cross-validation ><a href="#with_cross-validation">With Cross-Validation</a></h3>
+<pre><code class="julia hljs">cross_val_score(LogisticRegression(max_iter=<span class=hljs-number >130</span>), X_train, y_train; cv=<span class=hljs-number >5</span>)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >5</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Float64</span>,<span class=hljs-number >1</span>}:
+ <span class=hljs-number >1.0</span>
+ <span class=hljs-number >1.0</span>
+ <span class=hljs-number >0.8695652173913043</span>
+ <span class=hljs-number >1.0</span>
+ <span class=hljs-number >0.9523809523809523</span></code></pre>
+<pre><code class="julia hljs">y_pred = predict(logisticmodel, X_train);</code></pre>
+<h3 id=confusion_matrix ><a href="#confusion_matrix">Confusion Matrix</a></h3>
+<pre><code class="julia hljs">cf_matrix =confusion_matrix(y_train, y_pred)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >3</span>×<span class=hljs-number >3</span> <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Int64</span>,<span class=hljs-number >2</span>}:
+ <span class=hljs-number >35</span>   <span class=hljs-number >0</span>   <span class=hljs-number >0</span>
+  <span class=hljs-number >0</span>  <span class=hljs-number >36</span>   <span class=hljs-number >3</span>
+  <span class=hljs-number >0</span>   <span class=hljs-number >1</span>  <span class=hljs-number >3</span></code></pre>
+<h3 id=precision_recall ><a href="#precision_recall">Precision &amp; Recall</a></h3>
+<pre><code class="julia hljs">println(classification_report(y_train, y_pred))</code></pre>
+<pre><code class="julia hljs">precision    recall  f1-score   support
+
+      setosa       <span class=hljs-number >1.00</span>      <span class=hljs-number >1.00</span>      <span class=hljs-number >1.00</span>        <span class=hljs-number >35</span>
+  versicolor       <span class=hljs-number >0.97</span>      <span class=hljs-number >0.92</span>      <span class=hljs-number >0.95</span>        <span class=hljs-number >39</span>
+   virginica       <span class=hljs-number >0.93</span>      <span class=hljs-number >0.97</span>      <span class=hljs-number >0.95</span>        <span class=hljs-number >38</span>
+
+    accuracy                           <span class=hljs-number >0.96</span>       <span class=hljs-number >112</span>
+   <span class=hljs-keyword >macro</span> avg       <span class=hljs-number >0.97</span>      <span class=hljs-number >0.97</span>      <span class=hljs-number >0.97</span>       <span class=hljs-number >112</span>
+weighted avg       <span class=hljs-number >0.97</span>      <span class=hljs-number >0.96</span>      <span class=hljs-number >0.96</span>       <span class=hljs-number >112</span></code></pre>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Cognitive Informatics and Statistics Lab. Last modified: January 06, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
+    </div>
