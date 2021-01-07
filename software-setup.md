@@ -1,9 +1,6 @@
-+++
-title = "Software Setup"
-hascode = true
-date = Date(2019, 3, 22)
+@def title = "Software Setup"
+@def hascode = true
 
-+++
 @def tags = ["software-setup", "code"]
 
 # Software Setup
