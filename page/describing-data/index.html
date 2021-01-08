@@ -1,0 +1,54 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Describing Data </title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h4><a href="/CognitiveModelingLabWebsite/">Computational Cognitive Modeling Lab</a></h4> <p class=lead >A first course in modeling for Behavioral & Brain Scientists.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=describing_data ><a href="#describing_data">Describing Data </a></h1> <div class=colbox-yellow >All code used in this module is available <a href="https://github.com/coinslab/ComputationalCognitiveModeling/blob/main/julia-scripts/data-handling/describe-data.jl">here</a>.</div> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> RDatasets 
+data = dataset(<span class=hljs-string >&quot;datasets&quot;</span>, <span class=hljs-string >&quot;iris&quot;</span>)</code></pre> <p>Once you have loaded your data into your Julia work environment, an easy way to get a quick summary of your dataset is to use the <code>describe&#40;&#41;</code> function </p> <pre><code class="julia hljs">describe(data)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >5</span>×<span class=hljs-number >8</span> DataFrame
+│ Row │ variable    │ mean    │ min    │ median │ max       │ nunique │ nmissing │ eltype                   │
+│     │ <span class=hljs-built_in >Symbol</span>      │ Union…  │ <span class=hljs-built_in >Any</span>    │ Union… │ <span class=hljs-built_in >Any</span>       │ Union…  │ <span class=hljs-built_in >Nothing</span>  │ <span class=hljs-built_in >DataType</span>                 │
+├─────┼─────────────┼─────────┼────────┼────────┼───────────┼─────────┼──────────┼──────────────────────────┤
+│ <span class=hljs-number >1</span>   │ SepalLength │ <span class=hljs-number >5.84333</span> │ <span class=hljs-number >4.3</span>    │ <span class=hljs-number >5.8</span>    │ <span class=hljs-number >7.9</span>       │         │          │ <span class=hljs-built_in >Float64</span>                  │
+│ <span class=hljs-number >2</span>   │ SepalWidth  │ <span class=hljs-number >3.05733</span> │ <span class=hljs-number >2.0</span>    │ <span class=hljs-number >3.0</span>    │ <span class=hljs-number >4.4</span>       │         │          │ <span class=hljs-built_in >Float64</span>                  │
+│ <span class=hljs-number >3</span>   │ PetalLength │ <span class=hljs-number >3.758</span>   │ <span class=hljs-number >1.0</span>    │ <span class=hljs-number >4.35</span>   │ <span class=hljs-number >6.9</span>       │         │          │ <span class=hljs-built_in >Float64</span>                  │
+│ <span class=hljs-number >4</span>   │ PetalWidth  │ <span class=hljs-number >1.19933</span> │ <span class=hljs-number >0.1</span>    │ <span class=hljs-number >1.3</span>    │ <span class=hljs-number >2.5</span>       │         │          │ <span class=hljs-built_in >Float64</span>                  │
+│ <span class=hljs-number >5</span>   │ Species     │         │ setosa │        │ virginica │ <span class=hljs-number >3</span>       │          │ CategoricalString{<span class=hljs-built_in >UInt8</span>} │</code></pre>
+<p><strong>So how do we interpret the above table ?</strong></p>
+<ul>
+<li><p>The first column in the above table shows the column number of all columns in the data a.k.a the position of each column in the data </p>
+
+<li><p>The third, fourth, fifth, and sixth columns report the summary statistics of each column in the dataset. These summary statistics are important for understanding the dispersion and shape of the distribution of the variables you are interested.</p>
+
+<li><p><code>nunique</code> returns the no of unique elements in a column. This is an important information when your data contains categorical variables. In this case, we can see that <code>Species</code> column is categorical in  nature and has 3 unique elements/levels. To get the levels information, you can either use <code>levels&#40;&#41;</code> or <code>unique&#40;&#41;</code>.  While <code>levels&#40;&#41;</code> is just reserved for categorical type, <code>unique&#40;&#41;</code>can be used for any element type. </p>
+
+</ul>
+<pre><code class="julia hljs">unique(data.Species)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >3</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >String</span>,<span class=hljs-number >1</span>}:
+  <span class=hljs-string >&quot;setosa&quot;</span>
+  <span class=hljs-string >&quot;versicolor&quot;</span>
+  <span class=hljs-string >&quot;virginica&quot;</span></code></pre>
+<ul>
+<li><p>One of the many serious problems everyone face who deal with real-world data is the problem of missing data. It is very important to know if your data have <code>missing</code>  elements. <code>nmissing</code> returns the no of missing values in each column of the data. For <code>iris</code> data, we don&#39;t have any missing values and hence the field is empty. </p>
+
+</ul>
+<p><strong>But suppose you are only interested in the statistics of a particular column or a bunch of columns.</strong></p>
+<p>In that case you can use the functions provided by the <code>Statistics</code> standard library that comes with Julia. Suppose I am more interested in understanding <code>PetalWidth</code></p>
+<p>Standard Deviation: </p>
+<pre><code class="julia hljs"><span class=hljs-keyword >using</span> Statistics
+std(data.PetalWidth)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >0.7622376689603466</span></code></pre>
+<p>Variance:</p>
+<pre><code class="julia hljs">var(data.PetalWidth)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >0.581006263982103</span></code></pre>
+<p>Mean:</p>
+<pre><code class="julia hljs">mean(data.PetalWidth)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >1.1993333333333336</span></code></pre>
+<p>Median:</p>
+<pre><code class="julia hljs">median(data.PetalWidth)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >1.3</span></code></pre>
+<p>Correlation: </p>
+<pre><code class="julia hljs">cor(data.PetalWidth, data.PetalLength)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >0.9628654314027961</span></code></pre>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Cognitive Informatics and Statistics Lab. Last modified: January 08, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
+    </div>
