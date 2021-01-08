@@ -1,0 +1,171 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Fundamentals of Data Handling</title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h4><a href="/CognitiveModelingLabWebsite/">Computational Cognitive Modeling Lab</a></h4> <p class=lead >A first course in modeling for Behavioral & Brain Scientists.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=fundamentals_of_data_handling ><a href="#fundamentals_of_data_handling">Fundamentals of Data Handling </a></h1> <div class=colbox-yellow >All code used in this module is available <a href="https://github.com/coinslab/ComputationalCognitiveModeling/blob/main/julia-scripts/data-handling/understanding-data.jl">here</a>.</div> <p>In this module we will be using the following packages: <code>Rdatasets</code>, <code>DataFrames</code></p> <div class=colbox-blue >If you haven&#39;t installed those package and don&#39;t know how to install them, you can learn it from <a href="/CognitiveModelingLabWebsite/software-setup/#installing_julia_packages">here</a>.</div> <div class=franklin-toc ><ol><li><a href="#basics">Basics </a><li><a href="#referencing_cells_in_your_data">Referencing cells in your data</a><ol><li><a href="#referencing_by_columnrow_number">Referencing by column/row number </a><li><a href="#referencing_by_column_name">Referencing by column name</a></ol><li><a href="#getting_column_names">Getting Column Names</a></ol></div> <h2 id=basics ><a href="#basics">Basics </a></h2> <p>Let&#39;s first load the <code>iris</code> dataset from <code>RDatasets</code> package </p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> RDatasets, DataFrames 
+data = dataset(<span class=hljs-string >&quot;datasets&quot;</span>, <span class=hljs-string >&quot;iris&quot;</span>)</code></pre> <p><strong>Sneak Peaking into your dataset</strong></p> <p>One of the first thing you should be doing right after loading a dataset is to have a peek into them. You can do that with the help of <code>first&#40;&#41;</code> function in Julia which accepts the data and no. of rows you want to see as arguments. </p> <pre><code class="julia hljs">first(data,<span class=hljs-number >4</span>) <span class=hljs-comment ># Here we are telling Julia to show the first 4 rows</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >4</span>×<span class=hljs-number >5</span> DataFrame
+ Row │ SepalLength  SepalWidth  PetalLength  PetalWidth  Species 
+     │ <span class=hljs-built_in >Float64</span>      <span class=hljs-built_in >Float64</span>     <span class=hljs-built_in >Float64</span>      <span class=hljs-built_in >Float64</span>     Cat…    
+─────┼───────────────────────────────────────────────────────────
+   <span class=hljs-number >1</span> │         <span class=hljs-number >5.1</span>         <span class=hljs-number >3.5</span>          <span class=hljs-number >1.4</span>         <span class=hljs-number >0.2</span>  setosa
+   <span class=hljs-number >2</span> │         <span class=hljs-number >4.9</span>         <span class=hljs-number >3.0</span>          <span class=hljs-number >1.4</span>         <span class=hljs-number >0.2</span>  setosa
+   <span class=hljs-number >3</span> │         <span class=hljs-number >4.7</span>         <span class=hljs-number >3.2</span>          <span class=hljs-number >1.3</span>         <span class=hljs-number >0.2</span>  setosa
+   <span class=hljs-number >4</span> │         <span class=hljs-number >4.6</span>         <span class=hljs-number >3.1</span>          <span class=hljs-number >1.5</span>         <span class=hljs-number >0.2</span>  setosa</code></pre>
+<p>If you want to see the last few rows, just have a -ve sign to the no of rows.</p>
+<pre><code class="julia hljs">first(data,-<span class=hljs-number >4</span>) <span class=hljs-comment ># Showing the last 4 rows</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >4</span>×<span class=hljs-number >5</span> DataFrame
+ Row │ SepalLength  SepalWidth  PetalLength  PetalWidth  Species   
+     │ <span class=hljs-built_in >Float64</span>      <span class=hljs-built_in >Float64</span>     <span class=hljs-built_in >Float64</span>      <span class=hljs-built_in >Float64</span>     Cat…      
+─────┼─────────────────────────────────────────────────────────────
+   <span class=hljs-number >1</span> │         <span class=hljs-number >6.3</span>         <span class=hljs-number >2.5</span>          <span class=hljs-number >5.0</span>         <span class=hljs-number >1.9</span>  virginica
+   <span class=hljs-number >2</span> │         <span class=hljs-number >6.5</span>         <span class=hljs-number >3.0</span>          <span class=hljs-number >5.2</span>         <span class=hljs-number >2.0</span>  virginica
+   <span class=hljs-number >3</span> │         <span class=hljs-number >6.2</span>         <span class=hljs-number >3.4</span>          <span class=hljs-number >5.4</span>         <span class=hljs-number >2.3</span>  virginica
+   <span class=hljs-number >4</span> │         <span class=hljs-number >5.9</span>         <span class=hljs-number >3.0</span>          <span class=hljs-number >5.1</span>         <span class=hljs-number >1.8</span>  virginica</code></pre>
+<p>By examining the output of last two code blocks we can confidently conclude that there are 5 columns, out of which four have numerical values and one has labels. You will also notice that the first line of both outputs say <code>DataFrame</code>. This means that our <code>data</code> is of type <code>DataFrame</code>. Availability of a plethora of functions, across programing languages, to handle and pre-process data of type <code>DataFrame</code>  makes it one of the most widely used and recommended data types in data science.</p>
+<div class=colbox-blue >To know the type of your data or variables, you can use the <code>typeof&#40;&#41;</code> function in julia.</div>
+<pre><code class="julia hljs">typeof(data)</code></pre>
+<pre><code class="julia hljs">DataFrame</code></pre>
+<p><strong>Converting data from one type to another</strong></p>
+<p>Incase if you had data in some other type say <code>Array</code>, you can convert them into DataFrames using the <code>DataFrame&#40;&#41;</code> function in <code>DataFrames</code> package.</p>
+<pre><code class="julia hljs">A = [<span class=hljs-number >1</span> <span class=hljs-number >2</span> <span class=hljs-number >3</span>;<span class=hljs-number >4</span> <span class=hljs-number >5</span> <span class=hljs-number >6</span>] <span class=hljs-comment ># Created an array with 2 rows and 3 columns</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >2</span>×<span class=hljs-number >3</span> <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Int64</span>,<span class=hljs-number >2</span>}:
+ <span class=hljs-number >1</span>  <span class=hljs-number >2</span>  <span class=hljs-number >3</span>
+ <span class=hljs-number >4</span>  <span class=hljs-number >5</span>  <span class=hljs-number >6</span></code></pre>
+<pre><code class="julia hljs">B = DataFrame(A) <span class=hljs-comment ># Converts the above array into DataFrame and stores it in variable B</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >2</span>×<span class=hljs-number >3</span> DataFrame
+ Row │ x1     x2     x3    
+     │ <span class=hljs-built_in >Int64</span>  <span class=hljs-built_in >Int64</span>  <span class=hljs-built_in >Int64</span> 
+─────┼─────────────────────
+   <span class=hljs-number >1</span> │     <span class=hljs-number >1</span>      <span class=hljs-number >2</span>      <span class=hljs-number >3</span>
+   <span class=hljs-number >2</span> │     <span class=hljs-number >4</span>      <span class=hljs-number >5</span>      <span class=hljs-number >6</span></code></pre>
+<p>Suppose you are faced with a situation quite opposite to what we just illustrated. How would you convert our <code>iris</code> data, which is in a <code>DataFrame</code> type to <code>Array</code> type? For that scenario and for many other type conversions we can use Julia&#39;s inbuilt <code>convert&#40;&#41;</code> function. <code>convert&#40;&#41;</code> accepts the type you want your data to be converted into as its first argument and the data you want to convert as its second argument. </p>
+<pre><code class="julia hljs">array_data = convert(<span class=hljs-built_in >Array</span>, data)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >150</span>×<span class=hljs-number >5</span> <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Any</span>,<span class=hljs-number >2</span>}:
+ <span class=hljs-number >5.1</span>  <span class=hljs-number >3.5</span>  <span class=hljs-number >1.4</span>  <span class=hljs-number >0.2</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-number >4.9</span>  <span class=hljs-number >3.0</span>  <span class=hljs-number >1.4</span>  <span class=hljs-number >0.2</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-number >4.7</span>  <span class=hljs-number >3.2</span>  <span class=hljs-number >1.3</span>  <span class=hljs-number >0.2</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-number >4.6</span>  <span class=hljs-number >3.1</span>  <span class=hljs-number >1.5</span>  <span class=hljs-number >0.2</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-number >5.0</span>  <span class=hljs-number >3.6</span>  <span class=hljs-number >1.4</span>  <span class=hljs-number >0.2</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-number >5.4</span>  <span class=hljs-number >3.9</span>  <span class=hljs-number >1.7</span>  <span class=hljs-number >0.4</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-number >4.6</span>  <span class=hljs-number >3.4</span>  <span class=hljs-number >1.4</span>  <span class=hljs-number >0.3</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;setosa&quot;</span>
+ ⋮
+ <span class=hljs-number >6.8</span>  <span class=hljs-number >3.2</span>  <span class=hljs-number >5.9</span>  <span class=hljs-number >2.3</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-number >6.7</span>  <span class=hljs-number >3.3</span>  <span class=hljs-number >5.7</span>  <span class=hljs-number >2.5</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-number >6.7</span>  <span class=hljs-number >3.0</span>  <span class=hljs-number >5.2</span>  <span class=hljs-number >2.3</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-number >6.3</span>  <span class=hljs-number >2.5</span>  <span class=hljs-number >5.0</span>  <span class=hljs-number >1.9</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-number >6.5</span>  <span class=hljs-number >3.0</span>  <span class=hljs-number >5.2</span>  <span class=hljs-number >2.0</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-number >6.2</span>  <span class=hljs-number >3.4</span>  <span class=hljs-number >5.4</span>  <span class=hljs-number >2.3</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-number >5.9</span>  <span class=hljs-number >3.0</span>  <span class=hljs-number >5.1</span>  <span class=hljs-number >1.8</span>  CategoricalString{<span class=hljs-built_in >UInt8</span>} <span class=hljs-string >&quot;virginica&quot;</span></code></pre>
+<p><strong>What&#39;s the shape of your data?</strong></p>
+<p>Though the first line of the output of the above code blocks prints the shape of your data, sometimes you require these information while running some algorithms.  You can get the shape of your data saved in the variables <code>m</code> and <code>n</code> using the following code </p>
+<pre><code class="julia hljs">m,n=size(data)</code></pre>
+<pre><code class="julia hljs">(<span class=hljs-number >150</span>, <span class=hljs-number >5</span>)</code></pre>
+<h2 id=referencing_cells_in_your_data ><a href="#referencing_cells_in_your_data">Referencing cells in your data</a></h2>
+<p>Sometime you just need to look at a specific column or row or a bunch or rows and columns. How would we do that? Well, there are a couple of ways to do that.</p>
+<h3 id=referencing_by_columnrow_number ><a href="#referencing_by_columnrow_number">Referencing by column/row number </a></h3>
+<p>Accessing a single cell value: </p>
+<pre><code class="julia hljs">data[<span class=hljs-number >1</span>,<span class=hljs-number >2</span>] <span class=hljs-comment ># returns value in 1st row and 2nd column</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >3.5</span></code></pre>
+<p>Accessing an entire column: </p>
+<pre><code class="julia hljs">data[!,<span class=hljs-number >1</span>] <span class=hljs-comment ># returns all rows in 1st column</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >5.1</span>
+ <span class=hljs-number >4.9</span>
+ <span class=hljs-number >4.7</span>
+ <span class=hljs-number >4.6</span>
+ <span class=hljs-number >5.0</span>
+ <span class=hljs-number >5.4</span>
+ <span class=hljs-number >4.6</span>
+ ⋮
+ <span class=hljs-number >6.8</span>
+ <span class=hljs-number >6.7</span>
+ <span class=hljs-number >6.7</span>
+ <span class=hljs-number >6.3</span>
+ <span class=hljs-number >6.5</span>
+ <span class=hljs-number >6.2</span>
+ <span class=hljs-number >5.9</span></code></pre>
+<p>Accessing an entire row:</p>
+<pre><code class="julia hljs">data[<span class=hljs-number >1</span>,:]</code></pre>
+<pre><code class="julia hljs">DataFrameRow
+│ Row │ SepalLength │ SepalWidth │ PetalLength │ PetalWidth │ Species      │
+│     │ <span class=hljs-built_in >Float64</span>     │ <span class=hljs-built_in >Float64</span>    │ <span class=hljs-built_in >Float64</span>     │ <span class=hljs-built_in >Float64</span>    │ Categorical… │
+├─────┼─────────────┼────────────┼─────────────┼────────────┼──────────────┤
+│ <span class=hljs-number >1</span>   │ <span class=hljs-number >5.1</span>         │ <span class=hljs-number >3.5</span>        │ <span class=hljs-number >1.4</span>         │ <span class=hljs-number >0.2</span>        │ setosa       │</code></pre>
+<p>Accessing multiple columns:</p>
+<pre><code class="julia hljs">data[!,[<span class=hljs-number >1</span>,<span class=hljs-number >5</span>]] <span class=hljs-comment ># here we are accessing the 1st and 5th column</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >150</span>×<span class=hljs-number >2</span> DataFrame
+│ Row │ SepalLength │ Species      │
+│     │ <span class=hljs-built_in >Float64</span>     │ Categorical… │
+├─────┼─────────────┼──────────────┤
+│ <span class=hljs-number >1</span>   │ <span class=hljs-number >5.1</span>         │ setosa       │
+│ <span class=hljs-number >2</span>   │ <span class=hljs-number >4.9</span>         │ setosa       │
+│ <span class=hljs-number >3</span>   │ <span class=hljs-number >4.7</span>         │ setosa       │
+│ <span class=hljs-number >4</span>   │ <span class=hljs-number >4.6</span>         │ setosa       │
+│ <span class=hljs-number >5</span>   │ <span class=hljs-number >5.0</span>         │ setosa       │
+⋮
+│ <span class=hljs-number >145</span> │ <span class=hljs-number >6.7</span>         │ virginica    │
+│ <span class=hljs-number >146</span> │ <span class=hljs-number >6.7</span>         │ virginica    │
+│ <span class=hljs-number >147</span> │ <span class=hljs-number >6.3</span>         │ virginica    │
+│ <span class=hljs-number >148</span> │ <span class=hljs-number >6.5</span>         │ virginica    │
+│ <span class=hljs-number >149</span> │ <span class=hljs-number >6.2</span>         │ virginica    │
+│ <span class=hljs-number >150</span> │ <span class=hljs-number >5.9</span>         │ virginica    │</code></pre>
+<p>Accessing multiple rows:</p>
+<pre><code class="julia hljs">data[[<span class=hljs-number >1</span>,<span class=hljs-number >3</span>],:]</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >2</span>×<span class=hljs-number >5</span> DataFrame
+│ Row │ SepalLength │ SepalWidth │ PetalLength │ PetalWidth │ Species      │
+│     │ <span class=hljs-built_in >Float64</span>     │ <span class=hljs-built_in >Float64</span>    │ <span class=hljs-built_in >Float64</span>     │ <span class=hljs-built_in >Float64</span>    │ Categorical… │
+├─────┼─────────────┼────────────┼─────────────┼────────────┼──────────────┤
+│ <span class=hljs-number >1</span>   │ <span class=hljs-number >5.1</span>         │ <span class=hljs-number >3.5</span>        │ <span class=hljs-number >1.4</span>         │ <span class=hljs-number >0.2</span>        │ setosa       │
+│ <span class=hljs-number >2</span>   │ <span class=hljs-number >4.7</span>         │ <span class=hljs-number >3.2</span>        │ <span class=hljs-number >1.3</span>         │ <span class=hljs-number >0.2</span>        │ setosa       │</code></pre>
+<h3 id=referencing_by_column_name ><a href="#referencing_by_column_name">Referencing by column name</a></h3>
+<p>Referencing by column numbers isn&#39;t the smartest way to access columns and are more prone to human error, so a recommended way is to reference them by their name. </p>
+<p>Accessing a single column </p>
+<pre><code class="julia hljs">data.Species <span class=hljs-comment ># accessing the column for Species</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >150</span>-element CategoricalArray{<span class=hljs-built_in >String</span>,<span class=hljs-number >1</span>,<span class=hljs-built_in >UInt8</span>}:
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ <span class=hljs-string >&quot;setosa&quot;</span>
+ ⋮
+ <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-string >&quot;virginica&quot;</span>
+ <span class=hljs-string >&quot;virginica&quot;</span></code></pre>
+<p>You can also access the same column like this: </p>
+<pre><code class="julia hljs">data[!,:Species];</code></pre>
+<p>Accessing multiple columns </p>
+<pre><code class="julia hljs">data[!,[:Species, :SepalLength]] <span class=hljs-comment ># Also note that how column&#x27;s position changed in the output</span></code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >150</span>×<span class=hljs-number >2</span> DataFrame
+│ Row │ Species      │ SepalLength │
+│     │ Categorical… │ <span class=hljs-built_in >Float64</span>     │
+├─────┼──────────────┼─────────────┤
+│ <span class=hljs-number >1</span>   │ setosa       │ <span class=hljs-number >5.1</span>         │
+│ <span class=hljs-number >2</span>   │ setosa       │ <span class=hljs-number >4.9</span>         │
+│ <span class=hljs-number >3</span>   │ setosa       │ <span class=hljs-number >4.7</span>         │
+│ <span class=hljs-number >4</span>   │ setosa       │ <span class=hljs-number >4.6</span>         │
+│ <span class=hljs-number >5</span>   │ setosa       │ <span class=hljs-number >5.0</span>         │
+⋮
+│ <span class=hljs-number >145</span> │ virginica    │ <span class=hljs-number >6.7</span>         │
+│ <span class=hljs-number >146</span> │ virginica    │ <span class=hljs-number >6.7</span>         │
+│ <span class=hljs-number >147</span> │ virginica    │ <span class=hljs-number >6.3</span>         │
+│ <span class=hljs-number >148</span> │ virginica    │ <span class=hljs-number >6.5</span>         │
+│ <span class=hljs-number >149</span> │ virginica    │ <span class=hljs-number >6.2</span>         │
+│ <span class=hljs-number >150</span> │ virginica    │ <span class=hljs-number >5.9</span>         │</code></pre>
+<h2 id=getting_column_names ><a href="#getting_column_names">Getting Column Names</a></h2>
+<p>But how do you get all the column names in your data?</p>
+<pre><code class="julia hljs">names(data)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >5</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Symbol</span>,<span class=hljs-number >1</span>}:
+ :SepalLength
+ :SepalWidth
+ :PetalLength
+ :PetalWidth
+ :Species</code></pre>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Cognitive Informatics and Statistics Lab. Last modified: January 08, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
+    </div>
