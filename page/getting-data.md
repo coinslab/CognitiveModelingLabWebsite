@@ -8,6 +8,8 @@
 
 # Getting the data 
 
+\toc 
+
 Though we will be mostly using toy datasets from `RDatasets`, you are encouraged to explore and fiddle with publicly available open datasets for your own learning and for your class project. Some of the data repositories you should checkout are:
 
 - [Kaggle](https://www.kaggle.com/datasets): For all sorts of datasets.
@@ -18,7 +20,7 @@ Though we will be mostly using toy datasets from `RDatasets`, you are encouraged
 - [OpenNeuro](https://openneuro.org/public/datasets): For Neuroscience datasets 
 - [RDatasets](https://github.com/JuliaStats/RDatasets.jl): A collection of common datasets used in all Statistical/ Machine Learning textbooks 
 
-Once you have found a dataset, the first step in your Machine Learning programing workflow is to get the data into your work environment. Either the dataset came with a package, or you found a dataset from a repository like the UCI Machine Learning Repository, or you already have them in your computer. Here we  describe how you can load the datasets in each of the mentioned scenarios. 
+Once you have found a dataset, the first step in your Machine Learning programing workflow is to load the data into your work environment. Either the dataset came with a package, or you found a dataset from a repository like the UCI Machine Learning Repository, or you already have them in your computer. Here we  describe how you can load the datasets in each of the mentioned scenarios. 
 
 ## From URLs
 
@@ -38,7 +40,7 @@ download(url, dataname)
 
 
 
-### :mag: Useful Tip
+**:mag: Useful Tip**
 
 If in case you forgot your current working directory (where the above code will be downloading the dataset into), you just can run the following code and it will print your current working directory.
 
@@ -90,7 +92,7 @@ data = CSV.read("iris.csv", DataFrame) # This will load the dataset and convert 
 
 ## From Packages 
 
-Sometimes  you want toy datasets to develop the "proof-of-concept" code or check your algorithms. In that case,`Rdatasets` is a good starting point. 
+Sometimes  you want toy datasets to develop the "proof-of-concept" code or check your algorithms. In that case,`Rdatasets` is a good starting point. `RDatasets` provides access to many of the standard datasets that are generally used to get started in data science and machine learning. 
 
 The `RDatasets` comes with the `Iris` data, and the following code will illustrate how to load them into your Julia environment. 
 
@@ -120,5 +122,34 @@ data = dataset("datasets", "iris")
 
 
 
+## From other languages 
 
+Sometimes some parts of your data science/machine learning pipeline will be handled by another team whom might be using a different programming language. And for their ease of use, they might also be saving data in their language's native data format. In those cases you can use `NPZ`(Python), `RData` (R), or `MAT` (Matlab) packages to load those data. 
+
+### Python 
+
+```julia
+using NPZ
+data = npzread("iris.npz") # To load NPZ data
+npzwrite("iris_new.npz", data)  # To write NPZ data
+```
+
+
+
+### R
+
+```julia
+using RData
+data = RData.load("iris.rda") # To load NPZ data
+```
+
+  
+
+### MATLAB 
+
+```julia
+using MAT
+data = matread("iris.mat") # To load MAT data
+matwrite("iris_new.mat",data) # To write MAT data
+```
 

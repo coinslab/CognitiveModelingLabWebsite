@@ -102,3 +102,7 @@ add PyCall
 ```
 
  
+
+## Running in Google Colab 
+
+Though not a recommended way, if you fail to get things working in your computer, you can still participate in the lab exercises by running a session in the Google Colab. How-to guide is available [here](https://colab.research.google.com/github/ageron/julia_notebooks/blob/master/Julia_for_Pythonistas.ipynb). 
