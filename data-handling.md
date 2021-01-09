@@ -16,7 +16,7 @@ Routines and utilities to download dataset from the web, load data, split & do d
   - From your Desktop 
 - [Fundamentals of Data Handling](/page/getting-to-know-your-data) 
 - [Describing Data](/page/describing-data)
-- Visualizing Data
+- [Visualizing Data](/page/data-visualization)
 - Data Reshaping 
 - Data Pre-processing 
   - Data Splitting 
