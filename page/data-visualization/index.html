@@ -1,0 +1,94 @@
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Visualizing Data </title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h4><a href="/CognitiveModelingLabWebsite/">Computational Cognitive Modeling Lab</a></h4> <p class=lead >A first course in modeling for Behavioral & Brain Scientists.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=visualizing_data ><a href="#visualizing_data">Visualizing Data </a></h1> <div class=colbox-yellow >All code used in this module is available <a href="https://github.com/coinslab/ComputationalCognitiveModeling/blob/main/julia-scripts/data-handling/data-viz.jl">here</a>.</div> <p><br/> </p> <center><b>An Image is worth thousand words</b></center> <p><br/> </p> <p>This English proverb is particularly relevant in the context of Data Science and Modeling. While <a href="/CognitiveModelingLabWebsite/page/describing-data/">summary statistics</a> are a good starting point, they don&#39;t give you the full picture and in many cases patterns would be hiding inside the point estimates from your summary statistics. That is why Data Visualization &amp; Exploratory Analysis is an important step in the Machine Learning/Modeling pipeline. <strong>An hour spent in exploratory analysis could save you weeks in modeling and hundreds of dollars in compute time.</strong> In this module, we will use the <code>Iris</code> dataset and the <code>StatsPlots</code> Julia package to teach you how to do quick data visualization and look for patterns. </p> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> Plots 
+<span class=hljs-keyword >using</span> StatsPlots  
+<span class=hljs-keyword >using</span> RDatasets
+<span class=hljs-keyword >using</span> DataFrames
+data = dataset(<span class=hljs-string >&quot;datasets&quot;</span>, <span class=hljs-string >&quot;iris&quot;</span>)</code></pre> <p>To plot a specific column in your dataset, you need to know the column names of your data.</p> <pre><code class="julia hljs">names(data)</code></pre>
+<pre><code class="julia hljs"><span class=hljs-number >5</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >String</span>,<span class=hljs-number >1</span>}:
+ <span class=hljs-string >&quot;SepalLength&quot;</span>
+ <span class=hljs-string >&quot;SepalWidth&quot;</span>
+ <span class=hljs-string >&quot;PetalLength&quot;</span>
+ <span class=hljs-string >&quot;PetalWidth&quot;</span>
+ <span class=hljs-string >&quot;Species&quot;</span></code></pre>
+<p>Now we will take a look at <code>SepalLength</code></p>
+<pre><code class="julia hljs">histogram(data.SepalLength,   
+    xlabel=<span class=hljs-string >&quot;SepalLength&quot;</span>, ylabel=<span class=hljs-string >&quot;Frequency&quot;</span>, 
+    linewidth=<span class=hljs-number >0.2</span>, palette= :seaborn_deep, 
+    grid=<span class=hljs-literal >false</span>,label=<span class=hljs-string >&quot;&quot;</span>)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/hist-SepalLength.png" alt=hist-SepalLength  /></p>
+<ul>
+<li><p><code>histogram&#40;&#41;</code> is a function from Julia&#39;s <code>Plot</code> package that takes a 1D array and displays how the data is distributed within that array. </p>
+
+<li><p>The above plot tells us that majority of the values in <code>SepalLength</code> lies between the values of 5 &amp;7. </p>
+
+<li><p>The Y-axis tells you how many elements are there in a particular range. The above plot tells us that there are close to 30 elements in <code>SepalLength</code> whose values lie between 5 &amp; 5.5.</p>
+
+</ul>
+<p>Similarly, we can take a look at <code>SepalWidth</code></p>
+<pre><code class="julia hljs">histogram(data.SepalWidth,   
+    xlabel=<span class=hljs-string >&quot;SepalWidth&quot;</span>, ylabel=<span class=hljs-string >&quot;Frequency&quot;</span>, 
+    linewidth=<span class=hljs-number >0.2</span>, palette= :seaborn_deep, 
+    grid=<span class=hljs-literal >false</span>,label=<span class=hljs-string >&quot;&quot;</span>)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/hist-SepalWidth.png" alt=hist-SepalWidth  /></p>
+<p>How about <code>PetalLenght</code> now?</p>
+<pre><code class="julia hljs">histogram(data.PetalLength,    
+    xlabel=<span class=hljs-string >&quot;PetalLength&quot;</span>, ylabel=<span class=hljs-string >&quot;Frequency&quot;</span>, 
+    linewidth=<span class=hljs-number >0.2</span>, palette= :seaborn_deep, 
+    grid=<span class=hljs-literal >false</span>,label=<span class=hljs-string >&quot;&quot;</span>)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/hist-PetalLength.png" alt=hist-PetalLength  /></p>
+<ul>
+<li><p>Ok, this histogram looks off. In the last two histograms, you could see a pattern in the distribution of the data, whereas in this histogram, it is hard to tell if there is any pattern. </p>
+
+</ul>
+<p>One fact we know about the <code>Iris</code> dataset is that, it contains data about different species of the iris flower. </p>
+<p>What if, we group the <code>PetalLength</code> by their species and then try to interpret the histogram?</p>
+<pre><code class="julia hljs">groupedhist(data.PetalLength, 
+    group = data.Species, 
+    xlabel = <span class=hljs-string >&quot;PetalLength&quot;</span>, ylabel =<span class=hljs-string >&quot;Frequency&quot;</span>,
+     bar_position = :stack, palette= :seaborn_deep, linewidth=<span class=hljs-number >0.2</span>)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/hist-PetalLength-grouped.png" alt=hist-PetalLength-grouped  /></p>
+<ul>
+<li><p><code>groupedhist&#40;&#41;</code> is a function that comes with the <code>StatsPlots</code>. <code>groupedhist&#40;&#41;</code> helps us to visualize histogram of a column, when we want to group the values within the data by some categorical variable. </p>
+
+<li><p><code>groupedhist&#40;&#41;</code> takes in the 1D array as in the <code>histogram&#40;&#41;</code> function. But in addition to that, <code>groupedhist&#40;&#41;</code> also takes in an argument called <code>group</code>. Here you mention the column by which you would like to group the array you initially passed.  </p>
+
+<li><p>Now the previous histogram makes sense. The histogram in the last plot was not actually a single distribution, but 3 different distributions hiding under one&#33; </p>
+
+</ul>
+<p>Now let&#39;s move on to PetalWidth.</p>
+<pre><code class="julia hljs">histogram(data.PetalWidth,   
+    xlabel=<span class=hljs-string >&quot;PetallWidth&quot;</span>, ylabel=<span class=hljs-string >&quot;Frequency&quot;</span>, 
+    linewidth=<span class=hljs-number >0.2</span>, palette= :seaborn_deep, 
+    grid=<span class=hljs-literal >false</span>,label=<span class=hljs-string >&quot;&quot;</span>)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/hist-PetallWidth.png" alt=hist-PetallWidth  /></p>
+<ul>
+<li><p>Having seen what happened with <code>PetalLength</code>, it is not hard to guess what&#39;s going on here and you know exactly what to do&#33; </p>
+
+</ul>
+<pre><code class="julia hljs">groupedhist(data.PetalLength, 
+    group = data.Species, 
+    xlabel = <span class=hljs-string >&quot;PetalLength&quot;</span>, ylabel =<span class=hljs-string >&quot;Frequency&quot;</span>,
+     bar_position = :stack, palette= :seaborn_deep, linewidth=<span class=hljs-number >0.2</span>)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/hist-PetallWidth-grouped.png" alt=hist-PetallWidth-grouped  /></p>
+<p>While a histogram gives you idea about a single column, a scatterplot tell you visually how a pair of column are is correlated. </p>
+<p>Let&#39;s see if there is any relationship between <code>SepalLenght</code> and <code>SepalWidth</code></p>
+<pre><code class="julia hljs">scatter(data.SepalLength, data.SepalWidth,
+    xlabel=<span class=hljs-string >&quot;SepalLength&quot;</span>, ylabel=<span class=hljs-string >&quot;SepalWidth&quot;</span>, grid=<span class=hljs-literal >false</span>, label=<span class=hljs-string >&quot;&quot;</span>, 
+    palette= :seaborn_deep)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/scatter-SL-SP.png" alt=scatter-SL-SP  /></p>
+<p>Like in the case of histogram, we can group data points by categorial variable to see if there are any underlying pattern. </p>
+<pre><code class="julia hljs">scatter(data.SepalLength, data.SepalWidth,
+    group=data.Species,
+    xlabel=<span class=hljs-string >&quot;SepalLength&quot;</span>, ylabel=<span class=hljs-string >&quot;SepalWidth&quot;</span>, grid=<span class=hljs-literal >false</span>, 
+    palette= :seaborn_deep)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/scatter-SL-SP-grouped.png" alt=scatter-SL-SP-grouped  /></p>
+<p>Since creating plots for every column and every column pairs is a time consuming task, <code>StatsPlots</code> has put together a single function to generate all these plots at once. </p>
+<pre><code class="julia hljs">cornerplot(<span class=hljs-built_in >Array</span>(data[!,<span class=hljs-number >1</span>:<span class=hljs-number >4</span>]), label=names(data[!,<span class=hljs-number >1</span>:<span class=hljs-number >4</span>]),
+                size=(<span class=hljs-number >1000</span>,<span class=hljs-number >1000</span>), compact=<span class=hljs-literal >true</span>)</code></pre>
+<p><img src="/CognitiveModelingLabWebsite/img/summaryplot.png" alt=summaryplot  /></p>
+<div class=page-foot >
+  <div class=copyright >
+    &copy; Cognitive Informatics and Statistics Lab. Last modified: January 09, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
+  </div>
+</div>
+</div>
+    </div>
