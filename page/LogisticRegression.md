@@ -1,25 +1,23 @@
-@def title = "Getting Data"
+@def title = "Logistic Regression"
 @def hascode = true
-@def rss = "A short description of the page which would serve as **blurb** in a `RSS` feed; you can use basic markdown here but the whole description string must be a single line (not a multiline string). Like this one for instance. Keep in mind that styling is minimal in RSS so for instance don't expect maths or fancy styling to work; images should be ok though: ![](https://upload.wikimedia.org/wikipedia/en/b/b0/Rick_and_Morty_characters.jpg)"
-@def rss_title = "More goodies"
-@def rss_pubdate = Date(2019, 5, 1)
 
 @def tags = ["syntax", "code", "image"]
 
-# Multiclass Logistic Regression 
+# Logistic Regression 
 
-
+@@colbox-yellow All code used in this module is available [here](https://github.com/coinslab/ComputationalCognitiveModeling/blob/main/julia-scripts/model-zoo/logisitic.jl).@@
 
 ## Loading Packages & Modules from packages 
 
 ```julia
-using ScikitLearn
-using RDatasets
-import ScikitLearn: CrossValidation
+using CSV # This is a pacakge we use for loading CSV Files.
+using DataFrames
+@sk_import model_selection: train_test_split
 @sk_import linear_model: LogisticRegression
+@sk_import metrics: accuracy_score
 @sk_import metrics: confusion_matrix
 @sk_import metrics: classification_report
-@sk_import metrics: roc_curve
+@sk_import model_selection: cross_val_score
 ```
 
 
@@ -27,138 +25,126 @@ import ScikitLearn: CrossValidation
 ## Loading the dataset 
 
 ```julia
-iris = dataset("datasets", "iris")
+data = CSV.read("covid_cleaned.csv", DataFrame) 
 ```
 
 ```julia
-150×5 DataFrame
- Row │ SepalLength  SepalWidth  PetalLength  PetalWidth  Species   
-     │ Float64      Float64     Float64      Float64     Cat…      
-─────┼─────────────────────────────────────────────────────────────
-   1 │         5.1         3.5          1.4         0.2  setosa
-   2 │         4.9         3.0          1.4         0.2  setosa
-   3 │         4.7         3.2          1.3         0.2  setosa
-   4 │         4.6         3.1          1.5         0.2  setosa
-   5 │         5.0         3.6          1.4         0.2  setosa
-  ⋮  │      ⋮           ⋮            ⋮           ⋮           ⋮
- 146 │         6.7         3.0          5.2         2.3  virginica
- 147 │         6.3         2.5          5.0         1.9  virginica
- 148 │         6.5         3.0          5.2         2.0  virginica
- 149 │         6.2         3.4          5.4         2.3  virginica
- 150 │         5.9         3.0          5.1         1.8  virginica
-                                                   140 rows omitted
-```
-
-
-
-```julia
-X = convert(Array, iris[!, [:SepalLength, :SepalWidth, :PetalLength, :PetalWidth]]);
-X[1:5,:]
-```
-
-```julia
-5×4 Array{Float64,2}:
- 5.1  3.5  1.4  0.2
- 4.9  3.0  1.4  0.2
- 4.7  3.2  1.3  0.2
- 4.6  3.1  1.5  0.2
- 5.0  3.6  1.4  0.2
+20352×16 DataFrame
+   Row │ intubed  pneumonia  age    pregnancy  diabetes  copd   asthma  inmsupr  hypertension  other_disease  cardiovascular  obesity  renal_chronic  tobacco  contact_other_covid  covid_res 
+       │ Int64    Int64      Int64  Int64      Int64     Int64  Int64   Int64    Int64         Int64          Int64           Int64    Int64          Int64    Int64                Int64     
+───────┼──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+     1 │       0          0     25          0         0      0       0        0             0              0               0        0              0        0                    1          1
+     2 │       0          0     52          0         0      0       0        0             0              0               0        1              0        1                    1          1
+     3 │       0          1     51          0         0      0       0        0             0              0               0        0              0        0                    1          1
+     4 │       1          1     67          0         1      0       0        0             1              0               0        1              0        0                    1          1
+     5 │       0          1     59          0         1      0       0        0             0              0               0        0              0        0                    1          1
+     6 │       0          0     52          0         1      0       0        0             1              0               1        0              0        0                    0          1
+     7 │       0          1     54          0         0      0       0        0             0              0               0        0              0        0                    0          1
+     8 │       0          1     78          0         0      0       0        0             1              0               0        1              0        0                    1          1
+   ⋮   │    ⋮         ⋮        ⋮        ⋮         ⋮        ⋮      ⋮        ⋮          ⋮              ⋮              ⋮            ⋮           ⋮           ⋮              ⋮               ⋮
+ 20346 │       1          1     65          0         0      0       0        0             0              0               0        0              0        0                    0          0
+ 20347 │       0          1     49          0         0      0       0        0             0              0               0        0              0        0                    0          0
+ 20348 │       0          1     80          0         1      0       0        0             0              0               0        0              0        0                    0          0
+ 20349 │       0          0     13          0         0      0       0        0             0              0               0        0              0        0                    0          0
+ 20350 │       1          0     23          0         0      0       0        0             0              1               0        0              0        1                    0          0
+ 20351 │       0          1      1          0         0      0       0        0             0              0               0        0              0        0                    0          0
+ 20352 │       0          1     55          0         0      0       0        0             0              0               0        1              0        0                    0          0
+                                                                                                                                                                            20337 rows omitted
 ```
 
 
 
+The `ScikitLearn` package only accepts the data in array form, hence we need to convert our data into Arrays 
+
 ```julia
-y = y = convert(Array, iris[!, :Species]);
-y[1:5,:]
+X = convert(Array, data[!,Not(:covid_res)])
+y = convert(Array, data[!,:covid_res]) # :covid_res is our target variable
+```
+
+### Splitting the data into training set and test set 
+
+```julia
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42) # You can define the train/test size ratio using the test_size argument
+```
+
+- `train_test_split` is a function provided by the scikit-learn package. 
+- If you want random sampling while splitting the data, assign a number the the `random_state` argument to the `train_test_split` function. 
+- `test_size` specifies what should be the ratio of test data in the collection after splitting the data into training set and test set. Here we have specified that we need a test dataset of size = 33% of the original data. 
+
+### Model Definition 
+
+```julia
+simplelogistic = LogisticRegression(penalty=:none)
+```
+
+- This is how you define a simple logistic regression. `LogisticRegression()` is equally correct, but when you don't specify penalty to be `:none`, scikit learn chooses L2 regularization by default. 
+
+### Model Fitting 
+
+```julia
+fit!(simplelogistic,X_train,y_train)
+```
+
+- This will fit your model to the training dataset. 
+
+### Model Evaluation 
+
+Classification report with the training data: 
+
+```julia
+y_pred = predict(simplelogistic,X_train)
+print(classification_report(y_train,y_pred))
 ```
 
 ```julia
-5×1 Array{String,2}:
- "setosa"
- "setosa"
- "setosa"
- "setosa"
- "setosa"
+>	      precision    recall  f1-score   support
+
+           0       0.63      0.45      0.52      5684
+           1       0.67      0.81      0.74      7951
+
+    accuracy                           0.66     13635
+   macro avg       0.65      0.63      0.63     13635
+weighted avg       0.65      0.66      0.65     13635
 ```
 
-
-
-## Splitting the dataset 
+Classification report with the test data:
 
 ```julia
-logisticmodel = LogisticRegression(fit_intercept=true, max_iter = 200);
-```
-
-
-
-## Model Fitting 
-
-
-
-```julia
-fit!(logisticmodel, X_train, y_train)
-```
-
-
-
-### Checking the Accuracy 
-
-```julia
-accuracy = score(logisticmodel, X_train, y_train)
+y_pred = predict(simplelogistic,X_test)
+print(classification_report(y_test,y_pred))
 ```
 
 ```julia
-0.9642857142857143
+>              precision    recall  f1-score   support
+
+           0       0.64      0.45      0.53      2763
+           1       0.68      0.82      0.74      3954
+
+    accuracy                           0.67      6717
+   macro avg       0.66      0.64      0.64      6717
+weighted avg       0.66      0.67      0.66      6717
 ```
 
-### With Cross-Validation
+#### Cross Validation 
 
 ```julia
-cross_val_score(LogisticRegression(max_iter=130), X_train, y_train; cv=5)
+cross_val_score(LogisticRegression(penalty=:none ), X_train, y_train)
 ```
 
-```julia
+ ```julia
 5-element Array{Float64,1}:
- 1.0
- 1.0
- 0.8695652173913043
- 1.0
- 0.9523809523809523
-```
+ 0.6615328199486615
+ 0.6563989732306564
+ 0.6604327099376605
+ 0.6585991932526586
+ 0.654932159882655
+ ```
+
+#### Confusion Matrix 
 
 ```julia
-y_pred = predict(logisticmodel, X_train);
+plot_confusion_matrix(simplelogistic,X_train,y_train)
+gcf()
 ```
 
-### Confusion Matrix
-
-```julia
-cf_matrix =confusion_matrix(y_train, y_pred)
-```
-
-```julia
-3×3 Array{Int64,2}:
- 35   0   0
-  0  36   3
-  0   1  3
-```
-
-### Precision & Recall
-
-```julia
-println(classification_report(y_train, y_pred))
-```
-
-```julia
-
-              precision    recall  f1-score   support
-
-      setosa       1.00      1.00      1.00        35
-  versicolor       0.97      0.92      0.95        39
-   virginica       0.93      0.97      0.95        38
-
-    accuracy                           0.96       112
-   macro avg       0.97      0.97      0.97       112
-weighted avg       0.97      0.96      0.96       112
-```
-
+![](/img/cmatrix_logistic.PNG)
