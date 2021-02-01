@@ -8,5 +8,8 @@
 
 Implementation of various machine learning models with Scikit Learn
 
-[Logistic Regression](/page/LogisticRegression)
+Classification Models 
+
+- [Logistic Regression](/page/LogisticRegression)
+- [Neural Networks](/page/NeuralNetwork)
 
