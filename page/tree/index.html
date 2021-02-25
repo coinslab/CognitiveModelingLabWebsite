@@ -1,4 +1,4 @@
-<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Logistic Regression</title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h4><a href="/CognitiveModelingLabWebsite/">Computational Cognitive Modeling Lab</a></h4> <p class=lead >A first course in modeling for Behavioral & Brain Scientists.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=neural_networks ><a href="#neural_networks">Neural Networks </a></h1> <div class=colbox-yellow >All code used in this module is available <a href="https://github.com/coinslab/ComputationalCognitiveModeling/blob/main/julia-scripts/model-zoo/NN.jl">here</a>.</div> <h2 id=loading_packages ><a href="#loading_packages">Loading Packages</a></h2> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> DataFrames, CSV, ScikitLearn, PyPlot</code></pre>
+<!doctype html> <html lang=en > <meta charset=UTF-8 > <meta name=viewport  content="width=device-width, initial-scale=1"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/libs/highlight/github.min.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/franklin.css"> <link rel=stylesheet  href="/CognitiveModelingLabWebsite/css/poole_hyde.css"> <style> html {font-size: 17px;} .franklin-content {position: relative; padding-left: 8%; padding-right: 5%; line-height: 1.35em;} @media (min-width: 940px) { .franklin-content {width: 100%; margin-left: auto; margin-right: auto;} } @media (max-width: 768px) { .franklin-content {padding-left: 6%; padding-right: 6%;} } </style> <link rel=icon  href="/CognitiveModelingLabWebsite/assets/favicon.png"> <title>Decision Trees</title> <div class=sidebar > <div class="container sidebar-sticky"> <div class=sidebar-about > <h4><a href="/CognitiveModelingLabWebsite/">Computational Cognitive Modeling Lab</a></h4> <p class=lead >A first course in modeling for Behavioral & Brain Scientists.</p> </div> <nav class=sidebar-nav > <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/">Home</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/software-setup/">Software Setup</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/data-handling/">Data Handling</a> <a class="sidebar-nav-item " href="/CognitiveModelingLabWebsite/model-zoo/">Model Zoo</a> </nav> <p>&copy; Cognitive Informatics and Statistics Lab.</p> </div> </div> <div class="content container"> <div class=franklin-content ><h1 id=decision_tree ><a href="#decision_tree">Decision Tree</a></h1> <div class=colbox-yellow >All code used in this module is available <a href="https://github.com/coinslab/ComputationalCognitiveModeling/blob/main/julia-scripts/model-zoo/tree.jl">here</a>.</div> <h2 id=loading_packages ><a href="#loading_packages">Loading Packages</a></h2> <pre><code class="julia hljs"><span class=hljs-keyword >using</span> DataFrames, CSV, ScikitLearn, PyPlot</code></pre>
 <h2 id=loading_the_dataset ><a href="#loading_the_dataset">Loading the dataset </a></h2>
 <pre><code class="julia hljs">data = CSV.File(<span class=hljs-string >&quot;covid_cleaned.csv&quot;</span>) |&gt; DataFrame</code></pre>
 <pre><code class="julia hljs"><span class=hljs-number >20352</span>×<span class=hljs-number >16</span> DataFrame
@@ -37,59 +37,38 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=<span class=
 
 </ul>
 <h3 id=model_definition ><a href="#model_definition">Model Definition </a></h3>
-<pre><code class="julia hljs"><span class=hljs-meta >@sk_import</span> neural_network: MLPClassifier
-mlp_6layer = MLPClassifier(hidden_layer_sizes=(<span class=hljs-number >30</span>, <span class=hljs-number >50</span>, <span class=hljs-number >60</span>, <span class=hljs-number >10</span>, <span class=hljs-number >10</span>, <span class=hljs-number >10</span>))</code></pre>
+<pre><code class="julia hljs"><span class=hljs-meta >@sk_import</span> tree: DecisionTreeClassifier
+tree = DecisionTreeClassifier()</code></pre>
 <ul>
-<li><p>In this example we are using a NN Classifier. A Neural Network Regressor can be defined by <code>MLPRegressor</code>. </p>
-
-<li><p>The number of layers and number of nodes are defined by values passed to <code>hidden_layer_sizes</code>. Here we are saying that we need 6 hidden layers with 1st layer having 30 nodes, 2nd layer having 50 nodes, 3rd layer having 60 nodes, 4th, 5th, and 6th layer having 10 layers. </p>
+<li><p>In this example we are using a Decision Tree classifier</p>
 
 </ul>
 <h3 id=model_fitting ><a href="#model_fitting">Model Fitting </a></h3>
-<pre><code class="julia hljs">fit!(mlp_6layer,X_train,y_train)</code></pre>
+<pre><code class="julia hljs">fit!(tree,X_train,y_train)</code></pre>
 <ul>
 <li><p>This will fit your model to the training dataset. </p>
 
 </ul>
 <h3 id=model_evaluation ><a href="#model_evaluation">Model Evaluation </a></h3>
 <p>Classification report with the training data: </p>
-<pre><code class="julia hljs">y_pred = predict(mlp_6layer,X_train)
+<pre><code class="julia hljs">y_pred = predict(tree,X_train)
 
 <span class=hljs-meta >@sk_import</span> metrics: classification_report
 print(classification_report(y_train,y_pred))</code></pre>
 <pre><code class="julia hljs">&gt;              precision    recall  f1-score   support
 
-           <span class=hljs-number >0</span>       <span class=hljs-number >0.65</span>      <span class=hljs-number >0.51</span>      <span class=hljs-number >0.57</span>      <span class=hljs-number >5684</span>
-           <span class=hljs-number >1</span>       <span class=hljs-number >0.70</span>      <span class=hljs-number >0.80</span>      <span class=hljs-number >0.75</span>      <span class=hljs-number >7951</span>
+           <span class=hljs-number >0</span>       <span class=hljs-number >0.79</span>      <span class=hljs-number >0.75</span>      <span class=hljs-number >0.77</span>      <span class=hljs-number >4245</span>
+           <span class=hljs-number >1</span>       <span class=hljs-number >0.83</span>      <span class=hljs-number >0.85</span>      <span class=hljs-number >0.84</span>      <span class=hljs-number >5931</span>
 
-    accuracy                           <span class=hljs-number >0.68</span>     <span class=hljs-number >13635</span>
-   <span class=hljs-keyword >macro</span> avg       <span class=hljs-number >0.67</span>      <span class=hljs-number >0.66</span>      <span class=hljs-number >0.66</span>     <span class=hljs-number >13635</span>
-weighted avg       <span class=hljs-number >0.68</span>      <span class=hljs-number >0.68</span>      <span class=hljs-number >0.67</span>     <span class=hljs-number >13635</span></code></pre>
+    accuracy                           <span class=hljs-number >0.81</span>     <span class=hljs-number >10176</span>
+   <span class=hljs-keyword >macro</span> avg       <span class=hljs-number >0.81</span>      <span class=hljs-number >0.80</span>      <span class=hljs-number >0.80</span>     <span class=hljs-number >10176</span>
+weighted avg       <span class=hljs-number >0.81</span>      <span class=hljs-number >0.81</span>      <span class=hljs-number >0.81</span>     <span class=hljs-number >10176</span></code></pre>
 <p>Classification report with the test data:</p>
-<pre><code class="julia hljs">y_pred = predict(simplelogistic,X_test)
-print(classification_report(y_test,y_pred))</code></pre>
-<pre><code class="julia hljs">&gt;              precision    recall  f1-score   support
-
-           <span class=hljs-number >0</span>       <span class=hljs-number >0.65</span>      <span class=hljs-number >0.52</span>      <span class=hljs-number >0.57</span>      <span class=hljs-number >2763</span>
-           <span class=hljs-number >1</span>       <span class=hljs-number >0.70</span>      <span class=hljs-number >0.80</span>      <span class=hljs-number >0.75</span>      <span class=hljs-number >3954</span>
-
-    accuracy                           <span class=hljs-number >0.69</span>      <span class=hljs-number >6717</span>
-   <span class=hljs-keyword >macro</span> avg       <span class=hljs-number >0.68</span>      <span class=hljs-number >0.66</span>      <span class=hljs-number >0.66</span>      <span class=hljs-number >6717</span>
-weighted avg       <span class=hljs-number >0.68</span>      <span class=hljs-number >0.69</span>      <span class=hljs-number >0.68</span>      <span class=hljs-number >6717</span></code></pre>
-<h4 id=cross_validation ><a href="#cross_validation">Cross Validation </a></h4>
-<pre><code class="julia hljs"><span class=hljs-meta >@sk_import</span> model_selection: cross_val_score
-cross_val_score( MLPClassifier(hidden_layer_sizes=(<span class=hljs-number >30</span>, <span class=hljs-number >50</span>, <span class=hljs-number >60</span>, <span class=hljs-number >10</span>, <span class=hljs-number >10</span>, <span class=hljs-number >10</span>)), X_train, y_train)</code></pre>
-<pre><code class="julia hljs"><span class=hljs-number >5</span>-element <span class=hljs-built_in >Array</span>{<span class=hljs-built_in >Float64</span>,<span class=hljs-number >1</span>}:
- <span class=hljs-number >0.6651998533186652</span>
- <span class=hljs-number >0.6681334800146681</span>
- <span class=hljs-number >0.658965896589659</span>
- <span class=hljs-number >0.6729006233956729</span>
- <span class=hljs-number >0.6802346901356803</span></code></pre>
 <h4 id=confusion_matrix ><a href="#confusion_matrix">Confusion Matrix </a></h4>
 <pre><code class="julia hljs"><span class=hljs-meta >@sk_import</span> metrics: plot_confusion_matrix
-plot_confusion_matrix(mlp_6layer,X_train,y_train)
+plot_confusion_matrix(tree,X_train,y_train)
 PyPlot.gcf()</code></pre>
-<p><img src="/CognitiveModelingLabWebsite/img/cmatrix_NN.PNG" alt="" /></p>
+<p><img src="/CognitiveModelingLabWebsite/img/cmatrix_tree.PNG" alt="" /></p>
 <div class=page-foot >
   <div class=copyright >
     &copy; Cognitive Informatics and Statistics Lab. Last modified: February 25, 2021. Website built with <a href="https://github.com/tlienart/Franklin.jl">Franklin.jl</a> and the <a href="https://julialang.org">Julia programming language</a>.
