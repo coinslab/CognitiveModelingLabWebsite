@@ -7,25 +7,16 @@
 
 @@colbox-yellow All code used in this module is available [here](https://github.com/coinslab/ComputationalCognitiveModeling/blob/main/julia-scripts/model-zoo/NN.jl).@@
 
-## Loading Packages & Modules from packages 
+## Loading Packages
 
 ```julia
-using CSV # This is a pacakge we use for loading CSV Files.
-using DataFrames
-@sk_import model_selection: train_test_split
-@sk_import neural_network: MLPClassifier
-@sk_import metrics: accuracy_score
-@sk_import metrics: confusion_matrix
-@sk_import metrics: classification_report
-@sk_import model_selection: cross_val_score
+using DataFrames, CSV, ScikitLearn, PyPlot 
 ```
-
-
 
 ## Loading the dataset 
 
 ```julia
-data = CSV.read("covid_cleaned.csv", DataFrame) 
+data = CSV.File("covid_cleaned.csv") |> DataFrame
 ```
 
 ```julia
@@ -64,6 +55,7 @@ y = convert(Array, data[!,:covid_res]) # :covid_res is our target variable
 ### Splitting the data into training set and test set 
 
 ```julia
+@sk_import model_selection: train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42) # You can define the train/test size ratio using the test_size argument
 ```
 
@@ -74,6 +66,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 ### Model Definition 
 
 ```julia
+@sk_import neural_network: MLPClassifier
 mlp_6layer = MLPClassifier(hidden_layer_sizes=(30, 50, 60, 10, 10, 10))
 ```
 
@@ -94,6 +87,8 @@ Classification report with the training data:
 
 ```julia
 y_pred = predict(mlp_6layer,X_train)
+
+@sk_import metrics: classification_report
 print(classification_report(y_train,y_pred))
 ```
 
@@ -129,6 +124,7 @@ weighted avg       0.68      0.69      0.68      6717
 #### Cross Validation 
 
 ```julia
+@sk_import model_selection: cross_val_score
 cross_val_score( MLPClassifier(hidden_layer_sizes=(30, 50, 60, 10, 10, 10)), X_train, y_train)
 ```
 
@@ -144,8 +140,9 @@ cross_val_score( MLPClassifier(hidden_layer_sizes=(30, 50, 60, 10, 10, 10)), X_t
 #### Confusion Matrix 
 
 ```julia
+@sk_import metrics: plot_confusion_matrix
 plot_confusion_matrix(mlp_6layer,X_train,y_train)
-gcf()
+PyPlot.gcf()
 ```
 
 ![](/img/cmatrix_NN.PNG)

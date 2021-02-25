@@ -2,7 +2,7 @@
 @def hascode = true
 
 @def rss_title = "Advanced Data Handling"
-@def rss_pubdate = Date(2019, 5, 1)
+@def rss_pubdate = Date(2021, 5, 1)
 
 @def tags = ["syntax", "code", "image"]
 

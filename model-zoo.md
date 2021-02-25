@@ -12,4 +12,6 @@ Classification Models
 
 - [Logistic Regression](/page/LogisticRegression)
 - [Neural Networks](/page/NeuralNetwork)
+- [Decision Tree](/page/tree)
+- [Naive Bayes](/page/nbclassifier)
 
