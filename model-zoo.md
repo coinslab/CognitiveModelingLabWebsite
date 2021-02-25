@@ -14,4 +14,5 @@ Classification Models
 - [Neural Networks](/page/NeuralNetwork)
 - [Decision Tree](/page/tree)
 - [Naive Bayes](/page/nbclassifier)
+- [Random Forest](/page/randomforestclassifier)
 
